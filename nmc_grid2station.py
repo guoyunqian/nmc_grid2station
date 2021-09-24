@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-#Filename: grd_to_zxzx.py
+#Filename: nmc_grid2station.py
 
 """
 Created on Aug 25, 2021
@@ -61,7 +61,7 @@ loglib = LogLibMul()
 #日志文件存储目录
 log_file_dir = 'logfiles'
 #日志文件的文件名
-log_file_name = 'grd_to_zxzx.log'
+log_file_name = 'nmc_grid2station.log'
 
 #配置文件存储目录
 cfg_file_dir = 'config'
