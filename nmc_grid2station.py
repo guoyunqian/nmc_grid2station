@@ -378,7 +378,7 @@ def proc(cfgobj, etime, delta_t, logger, loglib):
             os.makedirs(dst_dir_hdf)
 
         dst_fullpath_hdf = os.path.join(dst_dir_hdf, public.get_path_with_replace(cfgobj.savecfginfos[FixParamTypes.DFnFmtHDF], save_dt))
-        dst_datas[FixParamTypes.GridData].to_hdf(dst_fullpath_hdf, 'zczc', 'w')
+        dst_datas[FixParamTypes.GridData].to_hdf(dst_fullpath_hdf, 'zczc', 'w', complevel=9)
 
 
 if __name__ == '__main__':
