@@ -353,14 +353,15 @@ def proc(cfgobj, etime, delta_t, logger, loglib):
     #经过处理后的需要保存的数据，以时效为key，xarray的格点数据为value的字典
     dst_datas = {}
     
-    #print('proc start:', datetime.datetime.now())
     #处理数据
+    logger.info('proc start')
+
     for proccfg in cfgobj.proccfglist:
         pparams = procfunc.procfuncs.set_func_params(proccfg[FixParamTypes.FuncName], save_dt, proccfg, src_datas, \
             cfgobj.savecfginfos, dst_datas, logger, stainfos=cfgobj.stainfos[FixParamTypes.StaInfos])
         procfunc.procfuncs.run_func(proccfg[FixParamTypes.FuncName], pparams, logger)
         
-    #print('proc over:', datetime.datetime.now())
+    logger.info('proc over')
 
     #数据保存路径
     dst_dir = public.get_path_with_replace(cfgobj.savecfginfos[FixParamTypes.DDict], save_dt)
@@ -373,12 +374,17 @@ def proc(cfgobj, etime, delta_t, logger, loglib):
     write_data_zczc(cfgobj, dst_fullpath, save_dt, dst_datas[FixParamTypes.GridData], logger)
 
     if cfgobj.savecfginfos[FixParamTypes.SaveHDF] == 1:
+        logger.info('to_hdf start')
+
         dst_dir_hdf = public.get_path_with_replace(cfgobj.savecfginfos[FixParamTypes.DDictHDF], save_dt)
         if not os.path.exists(dst_dir_hdf):
             os.makedirs(dst_dir_hdf)
 
         dst_fullpath_hdf = os.path.join(dst_dir_hdf, public.get_path_with_replace(cfgobj.savecfginfos[FixParamTypes.DFnFmtHDF], save_dt))
         dst_datas[FixParamTypes.GridData].to_hdf(dst_fullpath_hdf, 'zczc', 'w', complevel=9)
+
+        logger.info('to_hdf over')
+
 
 
 if __name__ == '__main__':
