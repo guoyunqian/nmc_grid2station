@@ -67,6 +67,13 @@ class CfgMain(object):
 
         self.savecfginfos[FixParamTypes.DFHS] = fhs
         
+        #提前多久生成起报时的数据
+        rst = public.get_opt_int(cfg, section, 'fhs_delta')
+        if rst is None:
+            raise Exception('save_config fhs_delta error')
+        
+        self.savecfginfos[FixParamTypes.DFhsDelta] = rst
+
         #product_desc
         rst = public.get_opt_str(cfg, section, 'product_desc')
         if rst is None:

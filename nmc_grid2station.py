@@ -329,8 +329,9 @@ def proc(cfgobj, etime, delta_t, logger, loglib):
     frdata = FixReadData(logger)
     fwrite = FixWriteData(logger)
     
+    save_e_time = etime+datetime.timedelta(minutes=cfgobj.savecfginfos[FixParamTypes.DFhsDelta])
     #数据的起报时时间
-    save_dt = public.get_dt_with_fhs(etime, cfgobj.savecfginfos[FixParamTypes.DFHS], delta_t)
+    save_dt = public.get_dt_with_fhs(save_e_time, cfgobj.savecfginfos[FixParamTypes.DFHS], delta_t)
 
     #从数据源中获取的数据，以多层字典形式存在，第一层key为配置文件中的section名字
     #value为以时效为key，xarray的格点数据为value的字典
