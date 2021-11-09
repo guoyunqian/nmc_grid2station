@@ -27,7 +27,8 @@ def convert_uv_to_ds(u, v, srcdefault=None, dstdefault=None, needcopy=False):
     s = np.sqrt(np.square(utmp) + np.square(vtmp))
     
     tmp = 270.0 - np.arctan2(vtmp, utmp) * 180.0 / np.pi
-    d = ((tmp * 100).astype(int) % 36000 / 100.0)
+    #d = ((tmp * 100).astype(int) % 36000 / 100.0)
+    d = ((tmp * 100) % 36000 / 100.0)
 
     if dstdefault is not None and (not np.isnan(dstdefault)):
         s[np.isnan(s)] = dstdefault

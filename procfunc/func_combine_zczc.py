@@ -9,6 +9,8 @@ Created on Aug 31, 2021
 """
 
 import copy
+import pandas as pd
+import numpy as np
 
 import public
 from publictype.fixparamtypes import FixParamTypes
@@ -65,7 +67,9 @@ def set_func_params(save_dt, func_params, src_datas, savecfginfos, dst_datas, lo
 
     return params
 
-#select数据
+'''
+#不保证与站点表中站点顺序一致
+#combine_zczc数据
 def run_func(params, logger):
     datas = params[FixParamTypes.GridDataList]
     dt = params[FixParamTypes.DT]
@@ -101,6 +105,53 @@ def run_func(params, logger):
 
     alldata.sort_values(by=[ColumnNames.StaID.value, ColumnNames.Seq.value], inplace=True)
     alldata.reset_index(drop=True, inplace=True)
+    dst_datas[FixParamTypes.GridData] = alldata.fillna(miss_value)
+    '''
+#与站点表的站点顺序一致
+#combine_zczc数据
+def run_func(params, logger):
+    datas = params[FixParamTypes.GridDataList]
+    dt = params[FixParamTypes.DT]
+    seq = params[FixParamTypes.SeqObj]
+    miss_value = params[FixParamTypes.Miss] if FixParamTypes.Miss in params else 9999.0
+    dstcols = params[FixParamTypes.DstCols]
+    dst_datas = params[FixParamTypes.DstGridData]
+
+    stainfos = params[FixParamTypes.StaInfos]
+
+    tmpstainfos = copy.deepcopy(stainfos)
+    #tmpstainfos.drop(['level', 'time', 'dtime'], axis=1, inplace=True)
+    tmpstainfos.drop([ColumnNames.Level.value, ColumnNames.Time.value, ColumnNames.DTime.value], axis=1, inplace=True)
+
+    alldata = pd.DataFrame(np.tile(tmpstainfos.values, len(seq)).reshape((len(seq)*len(tmpstainfos), len(tmpstainfos.columns))), columns=tmpstainfos.columns)
+    alldata[ColumnNames.StaID.value] = alldata[ColumnNames.StaID.value].astype(int)
+    alldata[ColumnNames.Alt.value] = alldata[ColumnNames.Alt.value].astype(int)
+    alldata[ColumnNames.Seq.value] = np.tile(seq, len(tmpstainfos))
+
+    for curcol in dstcols:
+        if curcol == ColumnNames.Seq.value:
+            continue
+        
+        coldata = None
+
+        for s in seq:
+            curdata = None
+            if curcol in datas and s in datas[curcol]:
+                curdata = copy.deepcopy(datas[curcol][s])
+            else:
+                curdata = pd.DataFrame(tmpstainfos[ColumnNames.StaID.value])
+                curdata[curcol] = miss_value
+                
+            curdata[ColumnNames.Seq.value] = s
+
+            if coldata is None:
+                coldata = curdata
+            else:
+                coldata = coldata.append(curdata)
+
+        alldata = alldata.merge(coldata, on=[ColumnNames.StaID.value, ColumnNames.Seq.value], how='left')
+
+    #alldata.reset_index(drop=True, inplace=True)
     dst_datas[FixParamTypes.GridData] = alldata.fillna(miss_value)
 
 if __name__ == '__main__':

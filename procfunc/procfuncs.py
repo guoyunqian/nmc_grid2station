@@ -14,6 +14,7 @@ import procfunc.func_max as procfunc_max
 import procfunc.func_min as procfunc_min
 import procfunc.func_cleansing_dstdata_with_nextseq as procfunc_cleansing_dstdata_with_nextseq
 import procfunc.func_combine_zczc as procfunc_combine_zczc
+import procfunc.func_minus as procfunc_minus
 
 def get_func_params(funcname, cfg, section, params, logger):
     if funcname == procfunc_select.func_name:
@@ -28,6 +29,8 @@ def get_func_params(funcname, cfg, section, params, logger):
         procfunc_cleansing_dstdata_with_nextseq.get_params(cfg, section, params, logger)
     elif funcname == procfunc_combine_zczc.func_name:
         procfunc_combine_zczc.get_params(cfg, section, params, logger)
+    elif funcname == procfunc_minus.func_name:
+        procfunc_minus.get_params(cfg, section, params, logger)
     else:
         raise Exception('unknown function name %s' % funcname)
 
@@ -44,6 +47,8 @@ def set_func_params(funcname, save_dt, func_params, src_datas, savecfginfos, dst
         return procfunc_cleansing_dstdata_with_nextseq.set_func_params(save_dt, func_params, src_datas, savecfginfos, dst_datas, logger)
     elif funcname == procfunc_combine_zczc.func_name:
         return procfunc_combine_zczc.set_func_params(save_dt, func_params, src_datas, savecfginfos, dst_datas, logger, stainfos=stainfos)
+    elif funcname == procfunc_minus.func_name:
+        return procfunc_minus.set_func_params(save_dt, func_params, src_datas, savecfginfos, dst_datas, logger)
     else:
         raise Exception('unknown function name %s' % funcname)
 
@@ -60,6 +65,8 @@ def run_func(funcname, params, logger):
         procfunc_cleansing_dstdata_with_nextseq.run_func(params, logger)
     elif funcname == procfunc_combine_zczc.func_name:
         procfunc_combine_zczc.run_func(params, logger)
+    elif funcname == procfunc_minus.func_name:
+        procfunc_minus.run_func(params, logger)
     else:
         raise Exception('unknown function name %s' % funcname)
 

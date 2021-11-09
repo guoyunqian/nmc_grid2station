@@ -16,7 +16,7 @@ import copy
 from logmodule.loglib import *
 from zczc.zczcpublictype import ZczcPublicType
 from publictype.columnnames import ColumnNames
-from conditiontypes import ConditionTypes as ct
+from publictype.conditiontypes import ConditionTypes as ct
 import public
 
 class ZCZCParser_np():

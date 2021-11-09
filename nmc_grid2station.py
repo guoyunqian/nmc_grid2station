@@ -273,7 +273,7 @@ def write_data_m4(cfgobj, fwrite, dst_fullpaths, savedt, dst_datas, logger):
 
     logger.info('write_data_m4 over')
     
-def write_data_m11(cfgobj, fwrite, dst_fullpath, savedt, dst_datas, logger):
+def write_data_m11(cfgobj, fwrite, dst_fullpaths, savedt, dst_datas, logger):
     logger.info('write_data_m11 start')
 
     #保存
@@ -319,7 +319,7 @@ def write_data_zczc(cfgobj, dst_fullpath, savedt, dst_datas, logger):
     #p.write()
     #print('write end:', datetime.datetime.now())
     #print('write with line start:', datetime.datetime.now())
-    p.write_with_line()
+    p.write_with_line_mul()
     #print('write with line end:', datetime.datetime.now())
 
     logger.info('write_data_zczc over')
@@ -456,7 +456,7 @@ if __name__ == '__main__':
                 etime -= datetime.timedelta(minutes=delta_t)
                 etime = public.get_dt_with_fhs(etime, cfgobj.savecfginfos[FixParamTypes.DFHS], delta_t)
     else:
-        #fix_etime = datetime.datetime(2021,8,31,8)
+        fix_etime = datetime.datetime(2021,8,31,8)
         proc(cfgobj, fix_etime, delta_t, mainlogger, loglib)
 
     print('done')
